@@ -1,0 +1,38 @@
+from asyncio import current_task
+from typing import AsyncGenerator
+
+from sqlalchemy.ext.asyncio import (
+    AsyncSession,
+    async_scoped_session,
+    async_sessionmaker,
+    create_async_engine,
+)
+
+from src.configs.settings.settings import settings
+
+AsyncPostgreSQLEngine = create_async_engine(
+    url=str(settings.ASYNC_DATABASE_URI),
+    echo=settings.SQLALCHEMY_ECHO,
+    isolation_level=settings.SQLALCHEMY_ISOLATION_LEVEL,
+    pool_size=settings.DB_POOL_SIZE,
+    max_overflow=64,
+)
+
+AsyncPostgreSQLScopedSession = async_scoped_session(
+    async_sessionmaker(
+        AsyncPostgreSQLEngine,
+        expire_on_commit=False,
+        autoflush=False,
+        autocommit=False,
+        class_=AsyncSession,
+    ),
+    scopefunc=current_task,
+)
+
+def get_async_postgresql_session() -> AsyncSession:
+    return AsyncPostgreSQLScopedSession()
+
+
+async def async_postgresql_session_context_manager() -> AsyncGenerator[AsyncSession, None]:
+    async with AsyncPostgreSQLScopedSession() as session:
+        yield session
