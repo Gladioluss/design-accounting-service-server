@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 from typing import Callable
 from uuid import UUID
 
@@ -38,7 +38,7 @@ class AuthRepository(AbstractAuthRepository):
             select(user_table)
             .where(user_table.c.id == id)
         )
-        user = (await self.session.execute(stmt)).scalars().one_or_none()
+        user = (await self.session.execute(stmt)).mappings().one_or_none()
         return user
 
     async def get_by_email(self, email: str) -> AuthModel | None:
@@ -46,7 +46,7 @@ class AuthRepository(AbstractAuthRepository):
             select(user_table)
             .where(user_table.c.email == email)
         )
-        user = (await self.session.execute(stmt)).scalars().one_or_none()
+        user = (await self.session.execute(stmt)).mappings().one_or_none()
         return user
     
     async def create(self, data: AuthModel) -> None:
