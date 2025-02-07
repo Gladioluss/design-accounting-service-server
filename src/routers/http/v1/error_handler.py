@@ -5,12 +5,14 @@ from starlette import status
 from src.errors.user import UserNotFoundError
 from src.errors.token import TokenError
 from src.errors.auth import (
-    UserAlreadyExists
+    IncorrectLoginError,
+    UserAlreadyExists,
+    UserValidateError
 )
 
 
 def add_exception_handlers(app: FastAPI):
-    ### Auth errors ###
+    ## Auth errors ###
     @app.exception_handler(UserAlreadyExists)
     async def handle_user_already_exists_error(_, exc):
         return JSONResponse(
@@ -20,12 +22,12 @@ def add_exception_handlers(app: FastAPI):
             status_code=status.HTTP_409_CONFLICT
         )
     
-
-    @app.exception_handler(UserAlreadyExists)
-    async def handle_user_validate_error(_, exc):
+    
+    @app.exception_handler(IncorrectLoginError)
+    async def handle_incorrect_login_error(_, exc):
         return JSONResponse(
             content={
-                'error': f'{type(exc).__name__}: {exc}'
+                'error': f'{type(exc).__name__}: {exc.message}'
             }, 
             status_code=status.HTTP_401_UNAUTHORIZED
         )
@@ -38,7 +40,7 @@ def add_exception_handlers(app: FastAPI):
             content={
                 'error': f'{type(exc).__name__}: {exc}'
             }, 
-            status_code=status.HTTP_403_FORBIDDEN
+            status_code=status.HTTP_401_UNAUTHORIZED
         )
     
     ### User errors ###

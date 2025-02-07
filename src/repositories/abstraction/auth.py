@@ -9,13 +9,13 @@ class AbstractAuthRepository(abc.ABC):
     session: Any
 
     @abc.abstractmethod
-    async def get_by_id(self, id: UUID):
+    async def get_by_id(self, id: UUID) -> AuthModel | None:
         raise NotImplementedError
        
     @abc.abstractmethod
-    async def get_by_email(self, email: str):
+    async def get_by_email(self, email: str) -> AuthModel | None:
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def create(self, data: AuthModel) -> UUID:
+    async def create(self, data: AuthModel) -> None:
         raise NotImplementedError

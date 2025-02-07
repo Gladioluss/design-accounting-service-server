@@ -32,7 +32,7 @@ def verify_password(password: str, encrypted_password: str):
 
 def create_access_token(subject: str | Any) -> str:
     expire = datetime.now() + timedelta(
-        minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
+        minutes=settings.REFRESH_TOKEN_EXPIRES_IN
     )
     to_encode = {"exp": expire, "sub": str(subject), "type": TokenType.access_token}
 
@@ -45,7 +45,7 @@ def create_access_token(subject: str | Any) -> str:
 
 def create_refresh_token(subject: str | Any) -> str:
     expire = datetime.now() + timedelta(
-        minutes=settings.REFRESH_TOKEN_EXPIRE_MINUTES
+        minutes=settings.REFRESH_TOKEN_EXPIRES_IN
     )
     to_encode = {"exp": expire, "sub": str(subject), "type": TokenType.refresh_token}
 

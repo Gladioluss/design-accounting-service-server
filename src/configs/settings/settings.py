@@ -24,8 +24,7 @@ class EnvironmentSettings(BaseSettings):
 
     SECRET_KEY: bytes
 
-    JWT_PUBLIC_KEY: str
-    JWT_PRIVATE_KEY: str
+    ENCRYPT_KEY: str
     REFRESH_TOKEN_EXPIRES_IN: int
     ACCESS_TOKEN_EXPIRES_IN: int
     JWT_ALGORITHM: str
