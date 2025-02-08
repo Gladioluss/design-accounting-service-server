@@ -7,9 +7,6 @@ from src.repositories.abstraction.refresh_token import AbstractRefreshTokenRepos
 from src.repositories.auth.repository import AuthRepository
 from src.repositories.refresh_token.repository import RefreshTokenRepository
 
-# pylint: disable=import-outside-toplevel,attribute-defined-outside-init
-
-
 
 class AbstractUnitOfWork(ABC):
     auth_repo: AbstractAuthRepository
