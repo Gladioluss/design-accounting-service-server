@@ -1,13 +1,11 @@
-import abc
 from abc import ABC, abstractmethod
-from typing import Any, Generic, Type, TypeVar
+from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from src.repositories.abstraction.refresh_token import AbstractRefreshTokenRepository
-from src.repositories.refresh_token.repository import RefreshTokenRepository
 from src.repositories.abstraction.auth import AbstractAuthRepository
+from src.repositories.abstraction.refresh_token import AbstractRefreshTokenRepository
 from src.repositories.auth.repository import AuthRepository
+from src.repositories.refresh_token.repository import RefreshTokenRepository
 
 # pylint: disable=import-outside-toplevel,attribute-defined-outside-init
 
@@ -18,7 +16,7 @@ class AbstractUnitOfWork(ABC):
     refresh_token_repo: AbstractRefreshTokenRepository
 
     def __init__(
-        self, 
+        self,
         auth_repo: AbstractAuthRepository,
         refresh_token_repo: AbstractRefreshTokenRepository
     ):
@@ -36,8 +34,8 @@ class AbstractUnitOfWork(ABC):
 
 class AsyncSQLAlchemyUnitOfWork(AbstractUnitOfWork):
     def __init__(
-            self, 
-            session: AsyncSession, 
+            self,
+            session: AsyncSession,
             auth_repo: AuthRepository,
             refresh_token_repo: RefreshTokenRepository
         ):
@@ -48,7 +46,7 @@ class AsyncSQLAlchemyUnitOfWork(AbstractUnitOfWork):
         return self
 
     async def __aexit__(
-        self, exc_type: Type[BaseException] | None, exc: BaseException | None, tb: Any
+        self, exc_type: type[BaseException] | None, exc: BaseException | None, tb: Any
     ):
         try:
             if exc_type is None:
@@ -89,7 +87,7 @@ class AsyncSQLAlchemyUnitOfWork(AbstractUnitOfWork):
 #     refresh_token_repo: AbstractRefreshTokenRepository
 
 #     def __init__(
-#         self, 
+#         self,
 #         auth_repo: TAuth,
 #         refresh_token_repo: TRefreshToken
 #     ):
@@ -99,7 +97,7 @@ class AsyncSQLAlchemyUnitOfWork(AbstractUnitOfWork):
 #     @abstractmethod
 #     async def __aenter__(self) -> 'AbstractUnitOfWork[TAuth]':
 #         raise NotImplementedError
-    
+
 #     @abstractmethod
 #     async def __aenter__(self) -> 'AbstractUnitOfWork[TRefreshToken]':
 #         raise NotImplementedError
@@ -111,8 +109,8 @@ class AsyncSQLAlchemyUnitOfWork(AbstractUnitOfWork):
 
 # class AsyncSQLAlchemyUnitOfWork(AbstractUnitOfWork[AuthRepository], AbstractUnitOfWork[RefreshTokenRepository]):
 #     def __init__(
-#             self, 
-#             session: AsyncSession, 
+#             self,
+#             session: AsyncSession,
 #             auth_repo: AuthRepository,
 #             refresh_token_repo: RefreshTokenRepository
 #         ):

@@ -1,5 +1,5 @@
 from asyncio import current_task
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -7,7 +7,6 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
-
 from src.configs.settings.settings import settings
 
 AsyncPostgreSQLEngine = create_async_engine(

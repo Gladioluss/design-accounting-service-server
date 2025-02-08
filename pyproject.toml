@@ -6,6 +6,7 @@ authors = ["Danil Emurashin <emurashin@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 
+
 [tool.poetry.dependencies]
 python = "^3.12"
 fastapi = "^0.115.6"
@@ -24,10 +25,28 @@ injector = "^0.22.0"
 yoyo-migrations = "^9.0.0"
 fastapi-mail = "^1.4.2"
 
+
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.8.6"
 
 
+[tool.ruff]
+line-length = 120
+show-fixes = true
+src = ["app"]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "UP",  # pyupgrade
+]
+
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [build-system]
 requires = ["poetry-core"]

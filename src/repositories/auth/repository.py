@@ -2,19 +2,18 @@ from datetime import datetime
 from typing import Callable
 from uuid import UUID
 
-from sqlalchemy import Boolean, Column, DateTime, String, insert, table, select, and_, update
+from sqlalchemy import Boolean, Column, DateTime, String, and_, insert, select, table, update
 from sqlalchemy.dialects.postgresql import UUID as SQLUUID
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from src.utils.uuid import uuid7
 from src.models.auth import AuthModel
 from src.repositories.abstraction.auth import AbstractAuthRepository
+from src.utils.uuid import uuid7
 from src.utils.verification.generate_verify_token import generate_verification_token
 
 func: Callable
 
 user_table = table(
-    "user", 
+    "user",
     Column("id", SQLUUID(as_uuid=True), primary_key=True, default=uuid7),
     Column("first_name", String(255)),
     Column("last_name", String(255)),
@@ -48,21 +47,21 @@ class AuthRepository(AbstractAuthRepository):
         )
         user = (await self.session.execute(stmt)).mappings().one_or_none()
         return user
-    
+
 
     async def get_verify_token_by_user_email(self, email: str) -> str | None:
         stmt = (
             select(user_table.c.verify_token)
             .where(
                 and_(
-                    user_table.c.email == email, 
-                    user_table.c.is_deleted == False
+                    user_table.c.email == email,
+                    not user_table.c.is_deleted
                 )
             )
         )
         verify_token = (await self.session.execute(stmt)).scalar_one_or_none()
         return verify_token
-    
+
     async def verify_user_by_user_email(self, email: str) -> None:
         stmt = (
             update(user_table)
@@ -71,7 +70,7 @@ class AuthRepository(AbstractAuthRepository):
         )
         await self.session.execute(stmt)
 
-    
+
     async def create(self, data: AuthModel) -> None:
         stmt = insert(user_table).values(
             first_name=data.first_name,
@@ -79,13 +78,13 @@ class AuthRepository(AbstractAuthRepository):
             middle_name=data.middle_name,
             email=data.email,
             password=data.password,
-            verify_token=generate_verification_token(),
+            verify_token=await generate_verification_token(),
             is_admin=True,
             is_verify=False,
             is_deleted=False
         )
         await self.session.execute(stmt)
-    
+
     async def update_verify_token_by_user_email(self, email: str, verify_token: str) -> str | None:
         stmt = (
             update(user_table)

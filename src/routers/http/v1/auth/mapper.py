@@ -1,12 +1,11 @@
-from src.models.auth import (
-    AuthModel
-)
+from src.models.auth import AuthModel
 
 from .schema import (
+    SigninRequest,
     SigninResponse,
     SignupRequest,
-    SigninRequest,
 )
+
 
 class AuthRequestMapper:
     @staticmethod
@@ -18,14 +17,14 @@ class AuthRequestMapper:
             email=instance.email,
             password=instance.password
         )
-    
+
     @staticmethod
     def create_singin_request_to_model(instance: SigninRequest) -> AuthModel:
         return AuthModel(
             email=instance.email,
             password=instance.password
         )
-    
+
 class AuthResponseMapper:
     @staticmethod
     def entity_to_response(instance: AuthModel, access_token: str) -> SigninResponse:
