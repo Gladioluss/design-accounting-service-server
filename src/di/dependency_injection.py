@@ -2,6 +2,7 @@ from injector import Injector, Module, provider
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.configs.database import IS_RELATIONAL_DB
+from src.repositories.refresh_token.repository import RefreshTokenRepository
 from src.repositories.auth.repository import AuthRepository
 
 from .unit_of_work import (
@@ -20,14 +21,19 @@ class RelationalDBModule(Module):
     @provider
     def provide_auth_repository(self, session: AsyncSession) -> AuthRepository:
         return AuthRepository(session)
+    
+    @provider
+    def provide_refresh_token_repository(self, session: AsyncSession) -> RefreshTokenRepository:
+        return RefreshTokenRepository(session)
 
     @provider
     def provide_async_sqlalchemy_unit_of_work(
         self, 
         session: AsyncSession, 
-        auth_repo: AuthRepository
+        auth_repo: AuthRepository,
+        refresh_token_repo: RefreshTokenRepository
     ) -> AbstractUnitOfWork:
-        return AsyncSQLAlchemyUnitOfWork(session, auth_repo)
+        return AsyncSQLAlchemyUnitOfWork(session, auth_repo, refresh_token_repo)
 
 
 class DatabaseModuleFactory:

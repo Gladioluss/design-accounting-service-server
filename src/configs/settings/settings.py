@@ -29,6 +29,10 @@ class EnvironmentSettings(BaseSettings):
     ACCESS_TOKEN_EXPIRES_IN: int
     JWT_ALGORITHM: str
 
+    MAIL_FROM: str
+    MAIL_PASSWORD: str
+    MAIL_PORT: int
+    MAIL_SERVER: str
 
     @field_validator("ASYNC_DATABASE_URI")
     def assemble_db_connection(cls, v: str | None, values: ValidationInfo) -> Any:

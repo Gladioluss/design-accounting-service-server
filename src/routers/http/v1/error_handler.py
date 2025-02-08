@@ -7,6 +7,7 @@ from src.errors.token import TokenError
 from src.errors.auth import (
     IncorrectLoginError,
     UserAlreadyExists,
+    UserNotFoundError,
     UserValidateError
 )
 
@@ -20,6 +21,16 @@ def add_exception_handlers(app: FastAPI):
                 'error': f'{type(exc).__name__}: {exc}'
             }, 
             status_code=status.HTTP_409_CONFLICT
+        )
+    
+
+    @app.exception_handler(UserNotFoundError)
+    async def handle_user_not_found_error(_, exc):
+        return JSONResponse(
+            content={
+                'error': f'{type(exc).__name__}: {exc}'
+            }, 
+            status_code=status.HTTP_404_NOT_FOUND
         )
     
     

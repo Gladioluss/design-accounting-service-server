@@ -7,4 +7,3 @@ class RefreshTokenModel(BaseModel):
     id: UUID | None = None
     user_id: UUID
     refresh_token: str
-    created_at: datetime

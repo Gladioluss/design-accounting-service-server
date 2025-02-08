@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Callable
 from uuid import UUID
 
-from sqlalchemy import Boolean, Column, DateTime, String, insert, table, select
+from sqlalchemy import Boolean, Column, DateTime, String, insert, table, select, and_, update
 from sqlalchemy.dialects.postgresql import UUID as SQLUUID
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,8 +22,8 @@ user_table = table(
     Column("email", String(255)),
     Column("password", String(255)),
     Column("verify_token", String(255)),
-    Column("updated_at", DateTime),
-    Column("created_at", DateTime),
+    Column("updated_at", DateTime, default=datetime.now()),
+    Column("created_at", DateTime, default=datetime.now()),
     Column("is_admin", Boolean),
     Column("is_verify", Boolean),
     Column("is_deleted", Boolean)
@@ -49,6 +49,29 @@ class AuthRepository(AbstractAuthRepository):
         user = (await self.session.execute(stmt)).mappings().one_or_none()
         return user
     
+
+    async def get_verify_token_by_user_email(self, email: str) -> str | None:
+        stmt = (
+            select(user_table.c.verify_token)
+            .where(
+                and_(
+                    user_table.c.email == email, 
+                    user_table.c.is_deleted == False
+                )
+            )
+        )
+        verify_token = (await self.session.execute(stmt)).scalar_one_or_none()
+        return verify_token
+    
+    async def verify_user_by_user_email(self, email: str) -> None:
+        stmt = (
+            update(user_table)
+            .where(user_table.c.email == email)
+            .values(is_verify=True)
+        )
+        await self.session.execute(stmt)
+
+    
     async def create(self, data: AuthModel) -> None:
         stmt = insert(user_table).values(
             first_name=data.first_name,
@@ -57,11 +80,18 @@ class AuthRepository(AbstractAuthRepository):
             email=data.email,
             password=data.password,
             verify_token=generate_verification_token(),
-            updated_at=datetime.now(),
-            created_at=datetime.now(),
             is_admin=True,
             is_verify=False,
             is_deleted=False
         )
         await self.session.execute(stmt)
     
+    async def update_verify_token_by_user_email(self, email: str, verify_token: str) -> str | None:
+        stmt = (
+            update(user_table)
+            .where(user_table.c.email == email)
+            .values(verify_token=verify_token,)
+            .returning(user_table.c.verify_token)
+        )
+        verify_token = (await self.session.execute(stmt)).scalar_one_or_none()
+        return verify_token

@@ -14,7 +14,7 @@ refresh_token_table = table(
     Column("id", SQLUUID(as_uuid=True), primary_key=True, default=uuid7),
     Column("user_id", SQLUUID(as_uuid=True), ForeignKey("user.id")),
     Column("refresh_token", String(255)),
-    Column("created_at", DateTime),
+    Column("created_at", DateTime, default=datetime.now()),
 )
 
 class RefreshTokenRepository(AbstractRefreshTokenRepository):
@@ -41,7 +41,6 @@ class RefreshTokenRepository(AbstractRefreshTokenRepository):
         stmt = insert(refresh_token_table).values(
             user_id=data.user_id,
             refresh_token=data.refresh_token,
-            created_at=datetime.now(),
         )
         await self.session.execute(stmt)
     
