@@ -30,6 +30,13 @@ fastapi-mail = "^1.4.2"
 ruff = "^0.8.6"
 
 
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.4"
+pytest-cov = "^6.0.0"
+pytest-dependency = "^0.6.0"
+pytest-env = "^1.1.5"
+
+
 [tool.ruff]
 line-length = 120
 show-fixes = true

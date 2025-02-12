@@ -1,14 +1,20 @@
 
 
-# class UserModel(BaseModel):
-#     id: UUID
-#     first_name: str
-#     last_name: str
-#     middle_name: str | None = None
-#     email: str
-#     password: str
-#     updated_at TIMESTAMP,
-#     created_at TIMESTAMP,
-#     is_admin BOOLEAN,
-#     is_verify BOOLEAN,
-#     is_deleted BOOLEAN
+from datetime import datetime
+from uuid import UUID
+
+from pydantic import BaseModel
+
+
+class UserModel(BaseModel):
+    id: UUID | None = None
+    first_name: str
+    last_name: str
+    middle_name: str | None = None
+    email: str
+    password: str
+    updated_at: datetime | None = None
+    created_at: datetime | None = None
+    is_admin: bool | None = None
+    is_verify: bool | None = None
+    is_deleted: bool | None = None

@@ -55,7 +55,7 @@ class AuthRepository(AbstractAuthRepository):
             .where(
                 and_(
                     user_table.c.email == email,
-                    not user_table.c.is_deleted
+                    user_table.c.is_deleted == False
                 )
             )
         )
