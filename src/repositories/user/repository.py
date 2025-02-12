@@ -1,15 +1,11 @@
-from datetime import datetime
-from sqlalchemy import Boolean, Column, DateTime, String, and_, func, select
+from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.dialects.postgresql import UUID as SQLUUID
 
+
+from src.entities.user import User
 from src.models.user import UserModel
-from src.repositories.auth.repository import user_table
+from src.repositories.auth.repository import User
 from src.repositories.abstraction.user import AbstractUserRepository
-from src.utils.uuid import uuid7
-
-Base = declarative_base()
 
 
 class UserRepository(AbstractUserRepository):
@@ -18,13 +14,13 @@ class UserRepository(AbstractUserRepository):
 
     async def get_all_users(self, limit: int, offset: int) -> tuple[list[UserModel], int]:
         stmt = (
-            select(user_table)
+            select(User)
             .offset(offset)
             .limit(limit)
             .where(
                 and_(
-                    user_table.c.is_verify == True,
-                    user_table.c.is_deleted == False
+                    User.c.is_verify == True,
+                    User.c.is_deleted == False
                 )
             )
         )
@@ -32,13 +28,13 @@ class UserRepository(AbstractUserRepository):
         
         next_offset = offset + limit
         next_stmt = (
-            select(user_table.c.id)
+            select(User.c.id)
             .offset(next_offset)
             .limit(limit)
             .where(
                 and_(
-                    user_table.c.is_verify == True,
-                    user_table.c.is_deleted == False
+                    User.c.is_verify == True,
+                    User.c.is_deleted == False
                 )
             )
         )
