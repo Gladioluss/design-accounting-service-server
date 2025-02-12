@@ -1,7 +1,7 @@
 from functools import lru_cache
 from typing import Any
 
-from pydantic import AnyHttpUrl, PostgresDsn, field_validator, ValidationInfo
+from pydantic import AnyHttpUrl, PostgresDsn, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings
 
 
@@ -29,6 +29,10 @@ class EnvironmentSettings(BaseSettings):
     ACCESS_TOKEN_EXPIRES_IN: int
     JWT_ALGORITHM: str
 
+    MAIL_FROM: str
+    MAIL_PASSWORD: str
+    MAIL_PORT: int
+    MAIL_SERVER: str
 
     @field_validator("ASYNC_DATABASE_URI")
     def assemble_db_connection(cls, v: str | None, values: ValidationInfo) -> Any:

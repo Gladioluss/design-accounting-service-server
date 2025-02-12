@@ -5,13 +5,8 @@ from typing import Any
 import jwt
 from jwt import DecodeError, ExpiredSignatureError, MissingRequiredClaimError
 from passlib.context import CryptContext
-
-from src.errors.token import (
-    TokenExpiredSignatureError,
-    TokenDecodeError,
-    TokenMissingRequiredClaimError
-)
 from src.configs.settings.settings import settings
+from src.errors.token import TokenDecodeError, TokenExpiredSignatureError, TokenMissingRequiredClaimError
 
 
 class TokenType(str, Enum):

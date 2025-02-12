@@ -19,3 +19,7 @@ yoyo-init:
 
 run-app:
 	uvicorn src.main:app --reload --port $(APP_PORT)
+
+	
+lint:
+	ruff check src

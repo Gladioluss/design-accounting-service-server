@@ -11,7 +11,7 @@ class AbstractRefreshTokenRepository(abc.ABC):
     @abc.abstractmethod
     async def get_by_id(self, id: UUID) -> RefreshTokenModel | None:
         raise NotImplementedError
-    
+
     @abc.abstractmethod
     async def get_by_user_id(self, user_id: UUID) -> RefreshTokenModel | None:
         raise NotImplementedError
