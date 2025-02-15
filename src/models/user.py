@@ -18,3 +18,10 @@ class UserModel(BaseModel):
     is_admin: bool | None = None
     is_verify: bool | None = None
     is_deleted: bool | None = None
+
+
+class UpdateUserModel(BaseModel):
+    first_name: str | None = None
+    last_name: str | None = None
+    middle_name: str | None = None
+    email: str | None = None
