@@ -2,7 +2,13 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from src.errors.auth import IncorrectLoginError, UserAlreadyExists
 from src.errors.auth import UserNotFoundError as UserNotFoundErrorAuth
-from src.errors.token import TokenError
+from src.errors.token import (
+    TokenDecodeError, 
+    TokenError, 
+    TokenExpiredSignatureError, 
+    TokenMissingRequiredClaimError, 
+    WrongVerifyToken
+)
 from src.errors.user import UserNotFoundError as UserNotFoundErrorUser
 from starlette import status
 
@@ -39,9 +45,12 @@ def add_exception_handlers(app: FastAPI):
             status_code=status.HTTP_401_UNAUTHORIZED
         )
 
-
    ### Token errors ###
     @app.exception_handler(TokenError)
+    @app.exception_handler(TokenExpiredSignatureError)
+    @app.exception_handler(TokenDecodeError)
+    @app.exception_handler(TokenMissingRequiredClaimError)
+    @app.exception_handler(WrongVerifyToken)
     async def handle_token_error(_, exc):
         return JSONResponse(
             content={

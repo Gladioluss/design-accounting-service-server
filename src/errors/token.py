@@ -9,3 +9,6 @@ class TokenDecodeError(TokenError):
 
 class TokenMissingRequiredClaimError(TokenError):
     pass
+
+class WrongVerifyToken(TokenError):
+    pass
