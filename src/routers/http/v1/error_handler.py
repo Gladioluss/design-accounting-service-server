@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from src.errors.auth import IncorrectLoginError, UserAlreadyExists
 from src.errors.auth import UserNotFoundError as UserNotFoundErrorAuth
-from src.errors.work_type import WorkTypeAlreadyExists
 from src.errors.token import (
+    BadCredentials,
     TokenDecodeError,
     TokenError,
     TokenExpiredSignatureError,
@@ -11,6 +11,7 @@ from src.errors.token import (
     WrongVerifyToken,
 )
 from src.errors.user import UserNotFoundError as UserNotFoundErrorUser
+from src.errors.work_type import WorkTypeAlreadyExists
 from starlette import status
 
 
@@ -52,6 +53,7 @@ def add_exception_handlers(app: FastAPI):
     @app.exception_handler(TokenDecodeError)
     @app.exception_handler(TokenMissingRequiredClaimError)
     @app.exception_handler(WrongVerifyToken)
+    @app.exception_handler(BadCredentials)
     async def handle_token_error(_, exc):
         return JSONResponse(
             content={

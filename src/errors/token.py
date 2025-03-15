@@ -1,6 +1,9 @@
 class TokenError(Exception):
     pass
 
+class BadCredentials(TokenError):
+    pass
+
 class TokenExpiredSignatureError(TokenError):
     pass
 
