@@ -1,9 +1,7 @@
-from typing import Callable
 from uuid import UUID
 
 from sqlalchemy import and_, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from src.entities.user import User
 from src.models.auth import AuthModel
 from src.repositories.abstraction.auth import AbstractAuthRepository
