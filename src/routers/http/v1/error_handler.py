@@ -2,12 +2,13 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from src.errors.auth import IncorrectLoginError, UserAlreadyExists
 from src.errors.auth import UserNotFoundError as UserNotFoundErrorAuth
+from src.errors.work_type import WorkTypeAlreadyExists
 from src.errors.token import (
-    TokenDecodeError, 
-    TokenError, 
-    TokenExpiredSignatureError, 
-    TokenMissingRequiredClaimError, 
-    WrongVerifyToken
+    TokenDecodeError,
+    TokenError,
+    TokenExpiredSignatureError,
+    TokenMissingRequiredClaimError,
+    WrongVerifyToken,
 )
 from src.errors.user import UserNotFoundError as UserNotFoundErrorUser
 from starlette import status
@@ -67,4 +68,14 @@ def add_exception_handlers(app: FastAPI):
                 'error': f'{type(exc).__name__}: {exc}'
             },
             status_code=status.HTTP_404_NOT_FOUND
+        )
+
+    ### Work type errors ###
+    @app.exception_handler(WorkTypeAlreadyExists)
+    async def handle_work_type_already_exists_error(_, exc):
+        return JSONResponse(
+            content={
+                'error': f'{type(exc).__name__}: {exc}'
+            },
+            status_code=status.HTTP_409_CONFLICT
         )

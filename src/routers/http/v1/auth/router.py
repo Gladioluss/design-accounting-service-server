@@ -8,7 +8,7 @@ from src.routers.http.v1.auth.schema import SigninRequest, SignupRequest
 from src.usecases import auth as auth_ucase
 from src.utils.authorization import authorization
 
-AuthRouter = APIRouter(prefix="/v1/auth", tags=["Auth"])
+AuthRouter = APIRouter(prefix="/auth", tags=["Auth"])
 
 @AuthRouter.post("/signup", status_code=status.HTTP_201_CREATED)
 async def _signup(
@@ -72,18 +72,15 @@ async def _verify_email_new(
 @AuthRouter.post("/change_password")
 async def _change_password(
     token: str = Depends(authorization)
-):
-    raise NotImplementedError
+): ...
 
 
 @AuthRouter.get("/refresh")
 async def _refresh(
 
-):
-    raise NotImplementedError
+): ...
 
 
 @AuthRouter.get("/logout")
 async def _logout(
-):
-    raise NotImplementedError
+): ...

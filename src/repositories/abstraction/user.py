@@ -20,7 +20,7 @@ class AbstractUserRepository(abc.ABC):
     
 
     @abc.abstractmethod
-    async def create(self, id: UUID, data: UserModel) -> UserModel:
+    async def create(self, data: UserModel) -> None:
         raise NotImplementedError
 
 

@@ -1,12 +1,11 @@
 from uuid import UUID
-from sqlalchemy import and_, func, select
+
+from sqlalchemy import and_, func, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
-
-
 from src.entities.user import User
 from src.models.user import UpdateUserModel, UserModel
-from src.repositories.auth.repository import User
 from src.repositories.abstraction.user import AbstractUserRepository
+from src.repositories.auth.repository import User
 
 
 class UserRepository(AbstractUserRepository):
@@ -57,10 +56,21 @@ class UserRepository(AbstractUserRepository):
         )
         user = (await self.session.execute(stmt)).mappings().one_or_none()
         return user
-    
 
-    async def create(self, id: UUID, data: UserModel) -> UserModel:
-        raise NotImplementedError
+
+    async def create(self, data: UserModel) -> None:
+        stmt = insert(User).values(
+            first_name=data.first_name,
+            last_name=data.last_name,
+            middle_name=data.middle_name,
+            email=data.email,
+            password=data.password,
+            verify_token=None,
+            is_admin=False,
+            is_verify=True,
+            is_deleted=False
+        )
+        await self.session.execute(stmt)
 
 
     async def update(self, id: UUID, data: UpdateUserModel) -> UserModel:
