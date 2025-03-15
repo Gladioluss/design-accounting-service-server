@@ -39,7 +39,6 @@ class UserRepository(AbstractUserRepository):
             )
         )
         next_count = (await self.session.execute(func.count(next_stmt))).scalar()
-
         return users, next_count
 
 

@@ -12,12 +12,12 @@ class AbstractUserRepository(abc.ABC):
     @abc.abstractmethod
     async def get_all(self, limit: int, offset: int) -> tuple[list[UserModel], int]:
         raise NotImplementedError
-    
+
 
     @abc.abstractmethod
     async def get_by_id(self, id: UUID) -> UserModel | None:
         raise NotImplementedError
-    
+
 
     @abc.abstractmethod
     async def create(self, data: UserModel) -> None:
