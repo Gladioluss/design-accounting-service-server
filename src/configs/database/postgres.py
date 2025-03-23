@@ -7,14 +7,24 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
+from src.configs.logging.logging import get_logger
 from src.configs.settings.settings import settings
+
+logger = get_logger("Database")
+logger.info("Creating AsyncPostgreSQLEngine", extra={
+    "database_name": str(settings.DATABASE_NAME),
+    "echo": settings.SQLALCHEMY_ECHO,
+    "isolation_level": settings.SQLALCHEMY_ISOLATION_LEVEL,
+    "pool_size": settings.DB_POOL_SIZE,
+    "max_overflow": settings.MAX_OVERFLOW
+})
 
 AsyncPostgreSQLEngine = create_async_engine(
     url=str(settings.ASYNC_DATABASE_URI),
     echo=settings.SQLALCHEMY_ECHO,
     isolation_level=settings.SQLALCHEMY_ISOLATION_LEVEL,
     pool_size=settings.DB_POOL_SIZE,
-    max_overflow=64,
+    max_overflow=settings.MAX_OVERFLOW,
 )
 
 AsyncPostgreSQLScopedSession = async_scoped_session(

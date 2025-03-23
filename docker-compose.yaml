@@ -18,6 +18,7 @@ services:
       - DATABASE_PORT=5432
     env_file:
       - .env
+    command: ["/app/bin/entrypoint.sh"]
     depends_on:
       - db
     networks:
