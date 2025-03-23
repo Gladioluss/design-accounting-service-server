@@ -1,6 +1,3 @@
-from uuid import UUID
-
-from sqlalchemy import and_, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.repositories.abstraction.defect import AbstractDefectRepository
 

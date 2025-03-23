@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from src.configs.logging.logging import get_logger
-from src.configs.settings.settings import settings
 from src.errors.auth import IncorrectLoginError, UserAlreadyExists
 from src.errors.auth import UserNotFoundError as UserNotFoundErrorAuth
 from src.errors.token import (

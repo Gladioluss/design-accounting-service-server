@@ -51,6 +51,7 @@ select = [
     "B",  # flake8-bugbear
     "UP",  # pyupgrade
 ]
+ignore = ["B008", "E712"]
 
 
 [tool.ruff.lint.pydocstyle]

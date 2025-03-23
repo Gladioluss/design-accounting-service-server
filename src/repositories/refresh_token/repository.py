@@ -7,7 +7,6 @@ from src.models.refresh_token import RefreshTokenModel
 from src.repositories.abstraction.refresh_token import AbstractRefreshTokenRepository
 
 
-
 class RefreshTokenRepository(AbstractRefreshTokenRepository):
     def __init__(self, session: AsyncSession):
         self.session = session
