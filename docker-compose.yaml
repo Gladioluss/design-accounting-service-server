@@ -34,7 +34,7 @@ services:
     ports:
       - "2345:5432"
     env_file:
-      - .env
+      - ./.env
     networks:
       - app-network
 
