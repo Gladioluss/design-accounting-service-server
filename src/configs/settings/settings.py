@@ -10,6 +10,7 @@ class EnvironmentSettings(BaseSettings):
     API_TITLE: str
     APP_PORT: int | str
     CORS_ORIGINS: list[str] | list[AnyHttpUrl]
+    LOG_LEVEL: str
 
     DATABASE_USER: str
     DATABASE_PASSWORD: str
@@ -20,6 +21,7 @@ class EnvironmentSettings(BaseSettings):
     SQLALCHEMY_ECHO: bool
     SQLALCHEMY_ISOLATION_LEVEL: str
     DB_POOL_SIZE: int = 90
+    MAX_OVERFLOW: int = 64
     ASYNC_DATABASE_URI: PostgresDsn | None = None
 
     SECRET_KEY: bytes

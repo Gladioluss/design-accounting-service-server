@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.entities.user import User
 from src.models.user import UpdateUserModel, UserModel
 from src.repositories.abstraction.user import AbstractUserRepository
-from src.repositories.auth.repository import User
 
 
 class UserRepository(AbstractUserRepository):

@@ -26,6 +26,7 @@ COPY /migrations/ /app/migrations/
 RUN poetry install --no-interaction --no-cache --without dev
 
 COPY ./src /app/src
+COPY ./bin/entrypoint.sh /app/bin/entrypoint.sh
 
 EXPOSE 8000
 
@@ -40,8 +41,3 @@ ENV DATABASE_PASSWORD=$DATABASE_PASSWORD
 ENV DATABASE_HOST=$DATABASE_HOST
 ENV DATABASE_PORT=$DATABASE_PORT
 ENV DATABASE_NAME=$DATABASE_NAME
-
-CMD ["sh", "-c", \
-    "poetry run yoyo init --database postgresql+psycopg://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME} migrations && \
-    poetry run yoyo develop && \
-    poetry run uvicorn src.main:app --host 0.0.0.0 --port 8000"]

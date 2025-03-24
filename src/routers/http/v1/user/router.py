@@ -16,7 +16,7 @@ UserRouter = APIRouter(prefix="/user", tags=["User"])
 async def _get_all_users(
     page: int = 0,
     size: int = 50,
-    token: str = Depends(authorization)
+    token: str = Depends(authorization),
 ) -> GetAllUsersResponseModel:
     async_unit_of_work = injector.get(AbstractUnitOfWork)
     users, next_count = await user_ucase.get_all_users(

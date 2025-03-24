@@ -3,7 +3,7 @@
 include .env
 
 run-docker-compose:
-	docker compose -f docker-compose.yaml up -d
+	docker compose -f docker-compose.yaml up -d --build
 
 stop-docker-compose:
 	docker compose -f docker-compose.yaml down

@@ -17,12 +17,11 @@ class UserRequestMapper:
 
 
 class UserResponseMapper:
-    
     @staticmethod
     def get_all_users_to_response(
-        instance: list[UserModel], 
-        page: int, 
-        size: int, 
+        instance: list[UserModel],
+        page: int,
+        size: int,
         next_count: int
     ) -> GetAllUsersResponseModel:
         return GetAllUsersResponseModel(
@@ -41,7 +40,7 @@ class UserResponseMapper:
                 ) for e in instance
             ]
         )
-    
+
     @staticmethod
     def user_to_response(
         instance: UserModel,

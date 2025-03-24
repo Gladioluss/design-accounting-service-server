@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import and_, insert, select, update
+from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.entities.work_type import WorkType
 from src.models.work_type import WorkTypeModel
