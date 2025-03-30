@@ -32,17 +32,18 @@ async def log_requests(req: Request, call_next):
 
     opts = get_logger_options(settings.API_TITLE,req)
     logger = opts["logger"]
-    custom_props = opts["custom_props"]
-    custom_props.update({"method": req.method})
-    custom_props.update({"url": req.url.path})
-    custom_props.update({"query": dict(req.query_params)})
-    custom_props.update({"params": dict(req.path_params)})
-    custom_props.update({"headers": dict(req.headers)})
-    logger.info("Incoming request", extra=custom_props)
+    custom_req_props = opts["custom_props"]
+    custom_req_props.update({"method": req.method})
+    custom_req_props.update({"url": req.url.path})
+    custom_req_props.update({"query": dict(req.query_params)})
+    custom_req_props.update({"params": dict(req.path_params)})
+    custom_req_props.update({"headers": dict(req.headers)})
+    logger.info("Incoming request", extra=custom_req_props)
     response = await call_next(req)
 
-    custom_props.update({"status_code": response.status_code})
-    logger.info("Request completed", extra=custom_props)
+    custom_res_props = opts["custom_props"]
+    custom_res_props.update({"status_code": response.status_code})
+    logger.info("Request completed", extra=custom_res_props)
     return response
 
 
