@@ -8,6 +8,7 @@ from starlette.middleware.cors import CORSMiddleware
 logger = get_logger(settings.API_TITLE)
 logger.info("Starting application")
 
+
 app = FastAPI(title=settings.API_TITLE, prefix=settings.API_PREFIX)
 
 app.add_middleware(
